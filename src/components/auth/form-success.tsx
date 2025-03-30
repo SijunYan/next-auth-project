@@ -4,7 +4,7 @@ import React from 'react'
 import { FaRegCheckCircle } from 'react-icons/fa';
 
 interface FormSuccessProps {
-    message: string;
+    message?: string;
 }
 
 const FormSuccess = ({

@@ -4,7 +4,7 @@ import React from 'react'
 import { BsExclamationTriangle } from 'react-icons/bs';
 
 interface FormErrorProps {
-    message: string;
+    message?: string;
 }
 
 const FormError = ({

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useTransition } from 'react'
 import CardWrapper from './card-wrapper'
 import { useForm } from 'react-hook-form'
 import { LoginFormType, LoginSchema } from '../../../schemas'
@@ -10,8 +10,13 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FormError from './form-error'
 import FormSuccess from './form-success'
+import { login } from '../../../actions/login'
 
 function LoginForm() {
+    const [isPending, startTransition] = useTransition()
+    const [error, setError] = useState<string | undefined>('')
+    const [success, setSuccess] = useState<string | undefined>('')
+
     const form = useForm<LoginFormType>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -21,7 +26,16 @@ function LoginForm() {
     })
 
     const onSubmit = (values: LoginFormType) => {
-        console.log(values)
+        setError('')
+        setSuccess('')
+        
+        startTransition(() => {
+            login(values)
+                .then((data) => {
+                    setSuccess(data.success)
+                    setError(data.error)
+            })
+        })
     }
 
     return (
@@ -45,7 +59,8 @@ function LoginForm() {
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input 
-                                            {...field} 
+                                            {...field}
+                                            disabled={isPending}
                                             placeholder="name@exampble.com"
                                             type='email'
                                         />
@@ -62,7 +77,8 @@ function LoginForm() {
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
                                         <Input 
-                                            {...field} 
+                                            {...field}
+                                            disabled={isPending}
                                             placeholder="******"
                                             type='password'
                                         />
@@ -72,11 +88,12 @@ function LoginForm() {
                             )}
                         />
                     </div>
-                    <FormError message='Invalid credentials!'/>
-                    <FormSuccess message='Email Sent!' />
+                    <FormError message={error} />
+                    <FormSuccess message={success} />
                     <Button
                         type='submit'
                         className='w-full'
+                        disabled={isPending}
                     >
                         Login
                     </Button>
