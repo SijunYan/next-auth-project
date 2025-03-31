@@ -3,14 +3,14 @@
 import React, { useState, useTransition } from 'react'
 import CardWrapper from './card-wrapper'
 import { useForm } from 'react-hook-form'
-import { LoginFormType, LoginSchema } from '../../../schemas'
+import { LoginFormType, LoginSchema } from '../../schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FormError from './form-error'
 import FormSuccess from './form-success'
-import { login } from '../../../actions/login'
+import { login } from '../../actions/login'
 
 function LoginForm() {
     const [isPending, startTransition] = useTransition()
@@ -28,7 +28,7 @@ function LoginForm() {
     const onSubmit = (values: LoginFormType) => {
         setError('')
         setSuccess('')
-        
+
         startTransition(() => {
             login(values)
                 .then((data) => {
@@ -42,7 +42,7 @@ function LoginForm() {
         <CardWrapper
             headLabel='Welcome back'
             backButtonLabel="Don't have an account?"
-            backButtonHref='/anth/register'
+            backButtonHref='/auth/register'
             showSocial
         >
             <Form {...form}>

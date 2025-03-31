@@ -3,14 +3,14 @@
 import React, { useState, useTransition } from 'react'
 import CardWrapper from './card-wrapper'
 import { useForm } from 'react-hook-form'
-import { RegisterFormType, RegisterSchema } from '../../../schemas'
+import { RegisterFormType, RegisterSchema } from '../../schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FormError from './form-error'
 import FormSuccess from './form-success'
-import { register } from '../../../actions/register'
+import { register } from '../../actions/register'
 
 function RegisterForm() {
     const [isPending, startTransition] = useTransition()
@@ -43,7 +43,7 @@ function RegisterForm() {
         <CardWrapper
             headLabel='Create an account'
             backButtonLabel="Already have an account?"
-            backButtonHref='/anth/login'
+            backButtonHref='/auth/login'
             showSocial
         >
             <Form {...form}>
