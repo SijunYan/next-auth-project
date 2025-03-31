@@ -3,12 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import NextAuth from 'next-auth'
 import authConfig from './auth.config'
+import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, protectedRoutes, publicRoutes } from '@/routes'
 
 const { auth } = NextAuth(authConfig)
- 
-// 1. Specify protected and public routes
-const protectedRoutes = ['/dashboard']
-const publicRoutes = ['/login', '/signup', '/']
  
 // export default async function middleware(req: NextRequest) {
 //   // 3. Decrypt the session from the cookie
@@ -32,19 +29,33 @@ const publicRoutes = ['/login', '/signup', '/']
   
 // }
  
-export default auth((req) => {
+export default auth((req: any) => {
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname
   console.log('Middleware is invoked on ' + path)
 
-  const isProtectedRoute = protectedRoutes.includes(path)
-  const isPublicRoute = publicRoutes.includes(path)
-
   const isLoggedIn = !!req.auth
   console.log('Logged in: ', isLoggedIn)
 
+  const isApiAuthRoute = path.startsWith(apiAuthPrefix)
+  const isProtectedRoute = protectedRoutes.includes(path)
+  const isPublicRoute = publicRoutes.includes(path)
+  const isAuthRoute = authRoutes.includes(path)
 
-  return NextResponse.next()
+  if (isApiAuthRoute) {
+    return
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl))
+      return
+  }
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return NextResponse.redirect(new URL('/auth/login', req.nextUrl))
+  }
+
+  return
 })
 
 // Routes Middleware should not run on
