@@ -27,14 +27,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
-    signIn: async({ user }) => {
-      // const existingUser = await getUserById(user.id!)
-      // console.log('login:', existingUser)
-      // if (!existingUser || !( existingUser! as User).emailVerified ) {
-      //   return false
-      // }
-      return true
-    }
+    // signIn: async({ user }) => {
+    //   const existingUser = await getUserById(user.id!)
+    //   console.log('login:', existingUser)
+    //   if (!existingUser || !( existingUser! as User).emailVerified ) {
+    //     return false
+    //   }
+    //   return true
+    // }
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },

@@ -3,6 +3,8 @@ import { CredentialsSignin, type NextAuthConfig } from "next-auth"
 import { LoginSchema } from "./schemas"
 import { getUserByEmail } from "./actions/services/user"
 import bcrypt from "bcryptjs";
+import GitHub from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
 
 class InvalidLoginError extends CredentialsSignin {
   code = "Invalid identifier or password"
@@ -11,6 +13,8 @@ class InvalidLoginError extends CredentialsSignin {
 // Notice this is only an object, not a full Auth.js instance
 export default {
   providers: [
+    Google,
+    GitHub,
     Credentials({
       credentials: {
         username: { label: "Username" },
