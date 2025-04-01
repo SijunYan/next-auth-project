@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import NextAuth from 'next-auth'
 import authConfig from './auth.config'
-import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, protectedRoutes, publicRoutes } from '@/routes'
+import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, publicRoutes } from '@/routes'
 
 const { auth } = NextAuth(authConfig)
  
@@ -38,7 +38,7 @@ export default auth((req: any) => {
   console.log('Logged in: ', isLoggedIn)
 
   const isApiAuthRoute = path.startsWith(apiAuthPrefix)
-  const isProtectedRoute = protectedRoutes.includes(path)
+  // const isProtectedRoute = protectedRoutes.includes(path)
   const isPublicRoute = publicRoutes.includes(path)
   const isAuthRoute = authRoutes.includes(path)
 

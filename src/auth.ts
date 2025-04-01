@@ -7,6 +7,10 @@ import { getUserById } from "./actions/services/user"
 import { User } from "@prisma/client"
  
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/error',
+  },
   callbacks: {
     jwt: async({token}) => {
       console.log('JWT Token: ', token)
@@ -35,6 +39,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     //   }
     //   return true
     // }
+  },
+  events: {
+    async linkAccount({ account, user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date()}
+      })
+    }
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
