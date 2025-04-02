@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import { RegisterFormType, RegisterSchema } from "../schemas";
 import { db } from '@/lib/db';
 import { Prisma } from '@prisma/client';
+import { generateVerificationToken } from '@/lib/email-tokens';
 
 export const register = async(values: RegisterFormType) => {
     try {
@@ -39,9 +40,10 @@ export const register = async(values: RegisterFormType) => {
             }
         })
 
-        // TODO: send valification token email
-
-        return { success: 'User created!'}
+        // Send valification token email
+        const verificationToken = await generateVerificationToken(email)
+        // TODO: send email with verification token
+        return { success: 'Confirmation email sent!'}
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             console.log("Known Error: ", error.code, error.meta, error.message)

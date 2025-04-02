@@ -10,4 +10,5 @@ npx prisma generate
 # sync
 npx prisma db push
 ```
-
+# Email provider
+[Resend](https://resend.com/home)

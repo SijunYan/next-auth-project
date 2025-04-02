@@ -38,7 +38,7 @@ function LoginForm() {
             login(values)
                 .then((data) => {
                     // TODO: Add when we add 2FA
-                    // setSuccess(data?.success)
+                    setSuccess(data?.success)
                     setError(data?.error)
             })
         })

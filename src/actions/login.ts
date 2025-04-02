@@ -4,6 +4,8 @@ import { signIn } from "@/auth";
 import { LoginFormType, LoginSchema } from "../schemas";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import { getUserByEmail } from "./services/user";
+import { generateVerificationToken } from "@/lib/email-tokens";
 
 export const login = async(values: LoginFormType) => {
 
@@ -14,6 +16,18 @@ export const login = async(values: LoginFormType) => {
     }
 
     const {email, password} = validateFields.data
+
+    const existingUser = await getUserByEmail(email)
+
+    if (!existingUser || !existingUser.password || !existingUser.email) {
+        return {error: 'User not found!'}
+    }
+
+    if (!existingUser.emailVerified) {
+        const verificationToken = await generateVerificationToken(existingUser.email)
+        return {success: 'Please verify your email first! Comfirmation email sent!'}
+    }
+
     try {
         await signIn('credentials', {
             email,
