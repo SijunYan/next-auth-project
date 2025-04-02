@@ -5,6 +5,7 @@ import { RegisterFormType, RegisterSchema } from "../schemas";
 import { db } from '@/lib/db';
 import { Prisma } from '@prisma/client';
 import { generateVerificationToken } from '@/lib/email-tokens';
+import { sendVerificationEmail } from '@/lib/mail';
 
 export const register = async(values: RegisterFormType) => {
     try {
@@ -42,7 +43,10 @@ export const register = async(values: RegisterFormType) => {
 
         // Send valification token email
         const verificationToken = await generateVerificationToken(email)
-        // TODO: send email with verification token
+        await sendVerificationEmail(
+            verificationToken.email,
+            verificationToken.token,
+        )
         return { success: 'Confirmation email sent!'}
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
