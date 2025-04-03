@@ -24,3 +24,11 @@ export const RegisterSchema = z.object({
 })
 
 export type RegisterFormType = z.infer<typeof RegisterSchema>
+
+export const ResetFormSchema = z.object({
+    email: z.string().email({
+        message: 'Email is required'
+    }),
+})
+
+export type ResetFormType = z.infer<typeof ResetFormSchema>

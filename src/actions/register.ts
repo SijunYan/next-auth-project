@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import { RegisterFormType, RegisterSchema } from "../schemas";
 import { db } from '@/lib/db';
 import { Prisma } from '@prisma/client';
-import { generateVerificationToken } from '@/lib/email-tokens';
+import { generateVerificationToken } from '@/lib/tokens';
 import { sendVerificationEmail } from '@/lib/mail';
 
 export const register = async(values: RegisterFormType) => {
@@ -15,7 +15,7 @@ export const register = async(values: RegisterFormType) => {
         const validateFields = RegisterSchema.safeParse(values)
 
         if(!validateFields.success) {
-            return { error: 'Ivalid fields!' }
+            return { error: 'Invalid fields!' }
         }
 
         const { email, password, name } = validateFields.data
