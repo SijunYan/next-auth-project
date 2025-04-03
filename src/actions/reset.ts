@@ -5,6 +5,13 @@ import { sendPasswordResetEmail } from "@/lib/mail"
 import { generatePasswordResetToken } from "@/lib/tokens"
 import { ResetFormSchema, ResetFormType } from "@/schemas"
 
+/**
+ * 
+ * @description Sends a password reset email to the user's email address.
+ * @param values 
+ * @returns 
+ */
+
 export default async function reset(values: ResetFormType) {
    try {
         // Validate data

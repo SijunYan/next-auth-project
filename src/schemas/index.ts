@@ -32,3 +32,11 @@ export const ResetFormSchema = z.object({
 })
 
 export type ResetFormType = z.infer<typeof ResetFormSchema>
+
+export const NewPasswordFormSchema = z.object({
+    password: z.string().min(6, {
+        message: 'Minimun 6 characters required'
+    }),
+})
+
+export type NewPasswordFormType = z.infer<typeof NewPasswordFormSchema>

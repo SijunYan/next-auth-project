@@ -4,6 +4,12 @@ import { db } from "@/lib/db"
 import { getVerificationTokenByToken } from "./services/verification-token"
 import { getUserByEmail } from "./services/user"
 
+/**
+ * 
+ * @description Update emailVerified attribute in user table.
+ * @param token 
+ * @returns 
+ */
 export default async function newVerification(token: string) {
   const existingToken = await getVerificationTokenByToken(token)
 
