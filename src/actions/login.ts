@@ -10,27 +10,29 @@ import { sendVerificationEmail } from "@/lib/mail";
 
 export const login = async(values: LoginFormType) => {
 
-    const validateFields = LoginSchema.safeParse(values)
-
-    if(!validateFields.success) {
-        return { error: 'Invalid fields!' }
-    }
-
-    const {email, password} = validateFields.data
-
-    const existingUser = await getUserByEmail(email)
-
-    if (!existingUser || !existingUser.password || !existingUser.email) {
-        return {error: 'User not found!'}
-    }
-
-    if (!existingUser.emailVerified) {
-        const verificationToken = await generateVerificationToken(existingUser.email)
-        await sendVerificationEmail(existingUser.email, verificationToken.token)
-        return {success: 'Please verify your email first! Comfirmation email sent!'}
-    }
-
     try {
+
+        const validateFields = LoginSchema.safeParse(values)
+
+        if(!validateFields.success) {
+            return { error: 'Invalid fields!' }
+        }
+
+        const {email, password} = validateFields.data
+
+        const existingUser = await getUserByEmail(email)
+
+        if (!existingUser || !existingUser.password || !existingUser.email) {
+            return {error: 'User not found!'}
+        }
+
+        if (!existingUser.emailVerified) {
+            const verificationToken = await generateVerificationToken(existingUser.email)
+            await sendVerificationEmail(existingUser.email, verificationToken.token)
+            return {success: 'Please verify your email first! Comfirmation email sent!'}
+        }
+
+    
         await signIn('credentials', {
             email,
             password,

@@ -12,3 +12,6 @@ npx prisma db push
 ```
 # Email provider
 [Resend](https://resend.com/home)
+
+# Tutorial
+- [NextJS Auth](https://www.youtube.com/watch?v=1MTyCvS05V4)
